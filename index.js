@@ -3,8 +3,9 @@ const cors = require("cors");
 const http = require("http");
 const { Server } = require("socket.io");
 const { io: ClientIO } = require("socket.io-client");
+const zlib = require("zlib");
 
-const TARGET_WS_URL = "https://south.starlinebullion.in:10004";
+const TARGET_WS_URL = "https://b2.starlinedashboard.in:10001";
 const PORT = 8080;
 
 const app = express();
@@ -17,6 +18,21 @@ const io = new Server(server, {
   cors: { origin: "*" },
 });
 
+// Example data format
+// {
+//     "symbol": "gold",
+//     "Name": "GOLD04APR25FUT",
+//     "Bid": 84900,
+//     "Ask": 84920,
+//     "High": 85279,
+//     "Low": 84433,
+//     "Open": 84653,
+//     "Close": 84444,
+//     "LTP": 84915,
+//     "Difference": 471,
+//     "Time": "11:54:39 PM"
+// }
+
 io.on("connection", (clientSocket) => {
   console.log("Client connected:", clientSocket.id);
 
@@ -24,14 +40,17 @@ io.on("connection", (clientSocket) => {
   const targetSocket = ClientIO(TARGET_WS_URL, {
     transports: ["websocket"],
   });
-  let prjName = "radhikajewellers";
+  let prjName = "radhika";
 
   targetSocket.on("connect", () => {
+    console.log("Target WebSocket connected");
     targetSocket.emit("client", prjName);
   });
 
-  targetSocket.on("refProduct", (data) => {
-    clientSocket.emit("message", data);
+  targetSocket.on("referanceProducts", (data) => {
+    const decompressed = zlib.inflateSync(data);
+    const json = JSON.parse(decompressed.toString());
+    clientSocket.emit("message", json);
   });
 
   // Handle disconnections
