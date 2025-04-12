@@ -4,7 +4,6 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { io: ClientIO } = require("socket.io-client");
 const zlib = require("zlib");
-const getPrices = require("./getPrices");
 
 const TARGET_WS_URL = "https://b2.starlinedashboard.in:10001";
 const PORT = 8080;
@@ -37,28 +36,36 @@ const io = new Server(server, {
 io.on("connection", (clientSocket) => {
   console.log("Client connected:", clientSocket.id);
 
-  getPrices()
-    .then((prices) => {
-      clientSocket.emit("message", prices);
-    })
-    .catch((error) => {
-      console.error("Error fetching prices:", error);
-    });
+  // Connect to the actual WebSocket server
+  const targetSocket = ClientIO(TARGET_WS_URL, {
+    transports: ["websocket"],
+  });
+  let prjName = "radhika";
 
-  setInterval(async () => {
-    try {
-      const prices = await getPrices();
-      clientSocket.emit("message", prices);
-    } catch (error) {
-      console.error("Error fetching prices:", error);
-    }
-  }, 10000);
+  targetSocket.on("connect", () => {
+    console.log("Target WebSocket connected");
+    targetSocket.emit("client", prjName);
+  });
+
+  targetSocket.on("referanceProducts", (data) => {
+    const decompressed = zlib.inflateSync(data);
+    const json = JSON.parse(decompressed.toString());
+    clientSocket.emit("message", json);
+  });
 
   // Handle disconnections
   clientSocket.on("disconnect", () => {
     console.log("Client disconnected:", clientSocket.id);
+    targetSocket.disconnect();
   });
 
+  targetSocket.on("disconnect", () => {
+    console.log("Target WebSocket disconnected");
+  });
+
+  targetSocket.on("error", (err) =>
+    console.error("Target WebSocket error:", err)
+  );
   clientSocket.on("error", (err) =>
     console.error("Client WebSocket error:", err)
   );
