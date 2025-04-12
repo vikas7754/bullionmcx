@@ -6,8 +6,8 @@ const formatPrice = (data, symbol) => {
   const formattedData = {
     symbol: symbol || data?.symbol || "default",
     Name: data?.name || data?.symbol + " Price" || "Unknown",
-    Bid: parseFloat(data?.bidPrice || 0),
-    Ask: parseFloat(data?.askPrice || 0),
+    Bid: parseFloat(data?.lastPrice || 0),
+    Ask: parseFloat(data?.avgPrice || 0),
     High: parseFloat(data?.highPrice || 0),
     Low: parseFloat(data?.lowPrice || 0),
     Open: parseFloat(data?.openPrice || 0),
