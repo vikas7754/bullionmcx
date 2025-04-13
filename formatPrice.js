@@ -1,13 +1,31 @@
 const formatPrice = (data, symbol) => {
-  //   if (!data) {
-  //     throw new Error("Invalid data received");
-  //   }
-  //   console.log("Received data:", data);
+  let bid = 0;
+  let ask = 0;
+  if (parseInt(data?.askPrice)) {
+    ask = parseFloat(data?.askPrice);
+  } else {
+    if (symbol === "gold" || symbol === "silver") {
+      ask = parseFloat(data?.lastPrice || 0);
+    } else {
+      ask = parseFloat(data?.lastPrice || 0) + parseFloat(data?.change || 0);
+    }
+  }
+
+  if (parseInt(data?.bidPrice)) {
+    bid = parseFloat(data?.bidPrice);
+  } else {
+    bid = parseFloat(data?.lastPrice || 0);
+    // if (symbol === "gold" || symbol === "silver") {
+    // } else {
+    //   bid = parseFloat(data?.lastPrice || 0) - parseFloat(data?.change || 0);
+    // }
+  }
+
   const formattedData = {
     symbol: symbol || data?.symbol || "default",
     Name: data?.name || data?.symbol + " Price" || "Unknown",
-    Bid: parseFloat(data?.avgPrice || 0),
-    Ask: parseFloat(data?.lastPrice || 0),
+    Bid: bid,
+    Ask: ask,
     High: parseFloat(data?.highPrice || 0),
     Low: parseFloat(data?.lowPrice || 0),
     Open: parseFloat(data?.openPrice || 0),
@@ -19,5 +37,7 @@ const formatPrice = (data, symbol) => {
 
   return formattedData;
 };
+
+const formatPrice1 = (data, symbol) => {};
 
 module.exports = formatPrice;

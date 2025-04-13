@@ -8,27 +8,30 @@ const getPrices = async () => {
     const GOLD_MCX = `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/GOLD?expiry=2025-06-05`;
     const SILVER_MCX = `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVER?expiry=2025-05-05`;
     const GOLD_NEXT =
-      "https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/GOLD?expiry=2025-06-05";
+      "https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/GOLD?expiry=2025-08-05";
     const SILVER_NEXT =
-      "https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVER?expiry=2025-05-05";
-    const GOLD_USD = "";
+      "https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVER?expiry=2025-07-04";
+    const GOLD_USD =
+      "https://priceapi.moneycontrol.com/pricefeed/usMarket/commodity/XAUUSD:CUR";
     const SILVER_USD = "";
-    const INR_SPOT = "";
+    const INR_SPOT =
+      "https://priceapi.moneycontrol.com/pricefeed/nse/currencyfuture/USDINR?expiry=2025-06-26";
 
     const promises = [
       axios.get(GOLD_MCX),
       axios.get(SILVER_MCX),
       axios.get(GOLD_NEXT),
       axios.get(SILVER_NEXT),
+      axios.get(INR_SPOT),
     ];
     const [
       { data: goldData },
       { data: silverData },
       { data: goldNextData },
       { data: silverNextData },
+      { data: inrSpotData },
       //   { data: goldUSDData },
       //   { data: silverUSDData },
-      //   { data: inrSpotData },
     ] = await Promise.all(promises);
     if (
       !goldData?.data ||
@@ -45,7 +48,7 @@ const getPrices = async () => {
     const silverNextPrice = formatPrice(silverNextData.data, "silvernext");
     const goldUSDPrice = formatPrice({}, "XAUUSD");
     const silverUSDPrice = formatPrice({}, "XAGUSD");
-    const inrSpotPrice = formatPrice({}, "INRSPOT");
+    const inrSpotPrice = formatPrice(inrSpotData.data, "INRSPOT");
 
     return [
       goldPrice,
