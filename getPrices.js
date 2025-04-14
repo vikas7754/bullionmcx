@@ -3,16 +3,13 @@ const formatPrice = require("./formatPrice");
 
 const getPrices = async () => {
   try {
-    // const expiry_date = new Date().toISOString().split("T")[0];
-
-    const GOLD_MCX = `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/GOLD?expiry=2025-06-05`;
-    const SILVER_MCX = `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVER?expiry=2025-05-05`;
+    const GOLD_MCX = `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/GOLD?expiry=2025-08-05`;
+    const SILVER_MCX = `https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVER?expiry=2025-07-04`;
     const GOLD_NEXT =
       "https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/GOLD?expiry=2025-08-05";
     const SILVER_NEXT =
       "https://priceapi.moneycontrol.com/pricefeed/mcx/commodityfutures/SILVER?expiry=2025-07-04";
-    const GOLD_USD =
-      "https://priceapi.moneycontrol.com/pricefeed/usMarket/commodity/XAUUSD:CUR";
+    const GOLD_USD = "";
     const SILVER_USD = "";
     const INR_SPOT =
       "https://priceapi.moneycontrol.com/pricefeed/nse/currencyfuture/USDINR?expiry=2025-06-26";

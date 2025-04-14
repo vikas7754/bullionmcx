@@ -14,11 +14,13 @@ const formatPrice = (data, symbol) => {
   if (parseInt(data?.bidPrice)) {
     bid = parseFloat(data?.bidPrice);
   } else {
-    bid = parseFloat(data?.lastPrice || 0);
-    // if (symbol === "gold" || symbol === "silver") {
-    // } else {
-    //   bid = parseFloat(data?.lastPrice || 0) - parseFloat(data?.change || 0);
-    // }
+    if (symbol === "gold") {
+      bid = parseFloat(data?.lastPrice ? data.lastPrice - 23 : 0);
+    } else if (symbol === "silver") {
+      bid = parseFloat(data?.lastPrice ? data.lastPrice - 8 : 0);
+    } else {
+      bid = parseFloat(data?.lastPrice || 0);
+    }
   }
 
   const formattedData = {
