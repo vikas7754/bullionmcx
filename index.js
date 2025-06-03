@@ -4,6 +4,7 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { io: ClientIO } = require("socket.io-client");
 const zlib = require("zlib");
+const path = require("path");
 
 const TARGET_WS_URL = "http://dashboard.ambicaaspot.com:10001";
 // const TARGET_WS_URL = "https://b2.starlinedashboard.in:10001";
@@ -11,6 +12,8 @@ const PORT = 8080;
 
 const app = express();
 app.use(cors());
+
+app.use(express.static(path.join(__dirname, "html")));
 
 const server = http.createServer(app);
 
