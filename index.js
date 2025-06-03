@@ -6,7 +6,7 @@ const { io: ClientIO } = require("socket.io-client");
 const zlib = require("zlib");
 const path = require("path");
 
-const TARGET_WS_URL = "http://dashboard.ambicaaspot.com:10001";
+const TARGET_WS_URL = "https://starlinesupport.co.in:10001";
 // const TARGET_WS_URL = "https://b2.starlinedashboard.in:10001";
 const PORT = 8080;
 
@@ -52,7 +52,8 @@ io.on("connection", (clientSocket) => {
   });
 
   targetSocket.on("Liverate", (data) => {
-    //    const parsedData = data.map(JSON.parse);
+    // const parsedData = JSON.parse(data);
+    // console.log("Received data from target WebSocket:", parsedData);
     clientSocket.emit("message", data);
   });
 
