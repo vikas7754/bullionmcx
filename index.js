@@ -44,7 +44,7 @@ io.on("connection", (clientSocket) => {
   const targetSocket = ClientIO(TARGET_WS_URL, {
     transports: ["websocket"],
   });
-  let prjName = "ambicaaspot";
+  let prjName = "lawatjewellers";
 
   targetSocket.on("connect", () => {
     console.log("Target WebSocket connected");
@@ -52,8 +52,8 @@ io.on("connection", (clientSocket) => {
   });
 
   targetSocket.on("Liverate", (data) => {
-    const parsedData = data.map(JSON.parse);
-    clientSocket.emit("message", parsedData);
+    //    const parsedData = data.map(JSON.parse);
+    clientSocket.emit("message", data);
   });
 
   // Handle disconnections
