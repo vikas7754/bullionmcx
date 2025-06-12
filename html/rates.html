@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bullion Rates</title>
+    <style>
+      body {
+        background-color: #121212;
+        color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      pre {
+        background-color: #1e1e1e;
+        padding: 15px;
+        border-radius: 6px;
+        overflow-x: auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Bullion Rates</h1>
+    <pre id="rates">Loading...</pre>
+
+    <script>
+      fetch("https://dataflow.org.in/data/bullion/rates")
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("rates").textContent = JSON.stringify(
+            data,
+            null,
+            4
+          );
+        })
+        .catch((error) => {
+          document.getElementById("rates").textContent = "Error: " + error;
+        });
+    </script>
+  </body>
+</html>
