@@ -6,8 +6,8 @@ const { io: ClientIO } = require("socket.io-client");
 const zlib = require("zlib");
 const path = require("path");
 
-// const TARGET_WS_URL = "https://starlinesupport.co.in:10001";
-const TARGET_WS_URL = "https://starlinebuild.in:10001";
+const TARGET_WS_URL = "https://starlinesupport.co.in:10001";
+// const TARGET_WS_URL = "https://b2.starlinedashboard.in:10001";
 const PORT = 8080;
 
 const app = express();
