@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 
 app.post("/api/prices", async (req, res) => {
   try {
-    const select = req.body?.select;
+    const select = req.query?.select ? req.query.select.split(",") : null;
     const prices = await getPrices();
     const filteredPrices = select
       ? prices.filter((p) => select.includes(p.symbol))
