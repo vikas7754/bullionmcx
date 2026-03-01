@@ -16,6 +16,24 @@ const app = express();
 app.use(cors());
 app.use(express.static(path.join(__dirname, "html")));
 
+app.get("/", (req, res) => {
+  res.send("Welcome to server");
+});
+
+app.post("/api/prices", async (req, res) => {
+  try {
+    const select = req.body?.select;
+    const prices = await getPrices();
+    const filteredPrices = select
+      ? prices.filter((p) => select.includes(p.symbol))
+      : prices;
+    res.json(filteredPrices);
+  } catch (err) {
+    console.error("HTTP API error:", err.message);
+    res.status(500).json({ error: "Failed to fetch prices" });
+  }
+});
+
 const server = http.createServer(app);
 
 const io = new Server(server, {

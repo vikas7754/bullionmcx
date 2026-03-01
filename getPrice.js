@@ -6,6 +6,16 @@ const getPrices = async () => {
 
     const { data } = await axios.get(url);
 
+    // Reformat the API response
+    data?.forEach((price, index) => {
+      if (price?.symb.toLowerCase() === "gold" && index > 0) {
+        price.symb = "goldm";
+      }
+      if (price?.symb.toLowerCase() === "silver" && index > 1) {
+        price.symb = "silverm";
+      }
+    });
+
     const prices = data?.map((price) => {
       let symbol = price.symb;
       let name = price.symb;
