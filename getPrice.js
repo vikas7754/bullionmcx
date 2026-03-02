@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const getPrices = async () => {
   try {
-    const url = "https://liveapi.uk/com/demo170226/";
+    const url = "https://liveapi.uk/com/svalpha/";
 
     const { data } = await axios.get(url);
 
