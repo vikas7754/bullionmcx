@@ -44,6 +44,7 @@ const getPrices = async () => {
         High: Number(item.high) || 0,
         Low: Number(item.low) || 0,
         LTP: Number(item.rate) || 0,
+        Rate: Number(item.rate) || 0,
         Time: currentTime,
         expiry: item.expiry,
         Direction: "neutral",
@@ -52,6 +53,10 @@ const getPrices = async () => {
         Difference: Number(item.chg || 0),
         BidDifference: 0,
         AskDifference: 0,
+        RateDifference: 0,
+        BidDifferencePercentage: 0,
+        AskDifferencePercentage: 0,
+        RateDifferencePercentage: 0,
       };
 
       const prev = prevPricesMap[current.symbol];
@@ -68,6 +73,7 @@ const getPrices = async () => {
         current.BidDifference = Number(current.Bid - prev.Bid);
         current.AskDifference = Number(current.Ask - prev.Ask);
         current.Difference = Number(current.Ask - prev.Ask);
+        current.RateDifference = Number(current.Rate - prev.Rate);
 
         current.BidDifferencePercentage =
           prev.Bid !== 0
@@ -76,6 +82,10 @@ const getPrices = async () => {
         current.AskDifferencePercentage =
           prev.Ask !== 0
             ? Number(((current.AskDifference / prev.Ask) * 100).toFixed(2))
+            : 0;
+        current.RateDifferencePercentage =
+          prev.Rate !== 0
+            ? Number(((current.RateDifference / prev.Rate) * 100).toFixed(2))
             : 0;
       }
 
