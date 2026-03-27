@@ -92,7 +92,30 @@ const getPrices = async () => {
       return current;
     });
 
-    // 2. CRITICAL FIX: Update the global state AFTER the loop finishes
+    // Start
+    prices.forEach((p) => {
+      if (p.symbol === "gold") {
+        const baseSymbol = p.symbol === "gold" ? "goldnext" : "silvernext";
+        const basePrice = prices.find((bp) => bp.symbol === baseSymbol);
+        if (basePrice) {
+          p.Bid = basePrice.Bid;
+          p.Ask = basePrice.Ask;
+          p.Rate = basePrice.Rate;
+          p.Direction = basePrice.Direction;
+          p.BidDirection = basePrice.BidDirection;
+          p.AskDirection = basePrice.AskDirection;
+          p.Difference = basePrice.Difference;
+          p.RateDifference = basePrice.RateDifference;
+          p.BidDifference = basePrice.BidDifference;
+          p.AskDifference = basePrice.AskDifference;
+          p.BidDifferencePercentage = basePrice.BidDifferencePercentage;
+          p.AskDifferencePercentage = basePrice.AskDifferencePercentage;
+          p.RateDifferencePercentage = basePrice.RateDifferencePercentage;
+        }
+      }
+    });
+    // End
+
     // Convert array to map for lightning-fast lookup next time
     prevPricesMap = prices.reduce((acc, p) => {
       acc[p.symbol] = p;
