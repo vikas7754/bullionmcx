@@ -100,6 +100,9 @@ const getPrices = async () => {
         if (basePrice) {
           p.Bid = basePrice.Bid;
           p.Ask = basePrice.Ask;
+          p.High = basePrice.High;
+          p.Low = basePrice.Low;
+          p.LTP = basePrice.LTP;
           p.Rate = basePrice.Rate;
           p.Direction = basePrice.Direction;
           p.BidDirection = basePrice.BidDirection;
