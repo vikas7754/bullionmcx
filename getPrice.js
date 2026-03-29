@@ -119,6 +119,24 @@ const getPrices = async () => {
     });
     // End
 
+    // For symbol INRSpot, update Ask price with Rate value
+    prices.forEach((p) => {
+      if (p.symbol === "INRSpot") {
+        p.Ask = p.Rate;
+        p.AskDirection = getDir(p.Ask, prevPricesMap[p.symbol]?.Ask || 0);
+        p.AskDifference = Number(p.Ask - (prevPricesMap[p.symbol]?.Ask || 0));
+        p.AskDifferencePercentage =
+          (prevPricesMap[p.symbol]?.Ask || 0) !== 0
+            ? Number(
+                (
+                  (p.AskDifference / (prevPricesMap[p.symbol]?.Ask || 1)) *
+                  100
+                ).toFixed(2),
+              )
+            : 0;
+      }
+    });
+
     // Convert array to map for lightning-fast lookup next time
     prevPricesMap = prices.reduce((acc, p) => {
       acc[p.symbol] = p;
