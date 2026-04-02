@@ -123,7 +123,7 @@ const getPrices = async () => {
     prices.forEach((p) => {
       if (p.symbol === "INRSpot") {
         p.Ask = p.Rate;
-        p.AskDirection = getDir(p.Ask, prevPricesMap[p.symbol]?.Ask || 0);
+        p.AskDirection = p?.RateDirection;
         p.AskDifference = Number(p.Ask - (prevPricesMap[p.symbol]?.Ask || 0));
         p.AskDifferencePercentage =
           (prevPricesMap[p.symbol]?.Ask || 0) !== 0
