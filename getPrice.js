@@ -3,6 +3,10 @@ const axios = require("axios");
 // Use an object/map for O(1) lookups instead of .find() which is O(n)
 let prevPricesMap = {};
 
+// Track when gold price last changed (for market closed detection)
+let goldLastChangeTime = Date.now();
+let lastGoldBid = null;
+
 const getPrices = async () => {
   try {
     const url = "https://liveapi.uk/com/svalpha/";
@@ -57,6 +61,7 @@ const getPrices = async () => {
         BidDifferencePercentage: 0,
         AskDifferencePercentage: 0,
         RateDifferencePercentage: 0,
+        marketClosed: false,
       };
 
       const prev = prevPricesMap[current.symbol];
@@ -118,6 +123,22 @@ const getPrices = async () => {
       }
     });
     // End
+
+    prices.forEach((p) => {
+      if (p.symbol === "gold") {
+        if (lastGoldBid !== null && p.Bid !== lastGoldBid) {
+          goldLastChangeTime = Date.now();
+        }
+        lastGoldBid = p.Bid;
+
+        // If gold price hasn't changed for 5 minutes, mark as market closed
+        if (Date.now() - goldLastChangeTime > 5 * 60 * 1000) {
+          p.marketClosed = true;
+        } else {
+          p.marketClosed = false;
+        }
+      }
+    });
 
     // For symbol INRSpot, update Ask price with Rate value
     prices.forEach((p) => {
