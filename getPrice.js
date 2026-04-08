@@ -3,6 +3,8 @@ const axios = require("axios");
 // Use an object/map for O(1) lookups instead of .find() which is O(n)
 let prevPricesMap = {};
 
+const TIME_THRESHOLD = 10 * 60 * 1000; // 10 minutes in milliseconds
+
 // Track when gold price last changed (for market closed detection)
 let goldLastChangeTime = Date.now();
 let lastGoldBid = null;
@@ -62,6 +64,7 @@ const getPrices = async () => {
         AskDifferencePercentage: 0,
         RateDifferencePercentage: 0,
         marketClosed: false,
+        t_change: Number(item.chg || 0),
       };
 
       const prev = prevPricesMap[current.symbol];
@@ -79,6 +82,7 @@ const getPrices = async () => {
         current.AskDifference = Number(current.Ask - prev.Ask);
         current.Difference = Number(current.Ask - prev.Ask);
         current.RateDifference = Number(current.Rate - prev.Rate);
+        current.t_change = Number(current.t_change || 0);
 
         current.BidDifferencePercentage =
           prev.Bid !== 0
@@ -131,8 +135,8 @@ const getPrices = async () => {
         }
         lastGoldBid = p.Bid;
 
-        // If gold price hasn't changed for 5 minutes, mark as market closed
-        if (Date.now() - goldLastChangeTime > 5 * 60 * 1000) {
+        // If gold price hasn't changed for `TIME_THRESHOLD` milliseconds, mark as market closed
+        if (Date.now() - goldLastChangeTime > TIME_THRESHOLD) {
           p.marketClosed = true;
         } else {
           p.marketClosed = false;
