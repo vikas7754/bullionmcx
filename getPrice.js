@@ -101,33 +101,42 @@ const getPrices = async () => {
       return current;
     });
 
-    // Start
-    const swapSymbol = "silver"; // enum: "gold" or "silver" or "none"
-    prices.forEach((p) => {
-      if (p.symbol === swapSymbol) {
-        const baseSymbol = p.symbol === "gold" ? "goldnext" : "silvernext";
-        const basePrice = prices.find((bp) => bp.symbol === baseSymbol);
-        if (basePrice) {
-          p.Bid = basePrice.Bid;
-          p.Ask = basePrice.Ask;
-          p.High = basePrice.High;
-          p.Low = basePrice.Low;
-          p.LTP = basePrice.LTP;
-          p.Rate = basePrice.Rate;
-          p.Direction = basePrice.Direction;
-          p.BidDirection = basePrice.BidDirection;
-          p.AskDirection = basePrice.AskDirection;
-          p.Difference = basePrice.Difference;
-          p.RateDifference = basePrice.RateDifference;
-          p.BidDifference = basePrice.BidDifference;
-          p.AskDifference = basePrice.AskDifference;
-          p.BidDifferencePercentage = basePrice.BidDifferencePercentage;
-          p.AskDifferencePercentage = basePrice.AskDifferencePercentage;
-          p.RateDifferencePercentage = basePrice.RateDifferencePercentage;
-        }
+    // Swap gold with goldnext and silver with silvernext prices
+    const swapFields = [
+      "Bid",
+      "Ask",
+      "High",
+      "Low",
+      "LTP",
+      "Rate",
+      "expiry",
+      "Direction",
+      "BidDirection",
+      "AskDirection",
+      "Difference",
+      "BidDifference",
+      "AskDifference",
+      "RateDifference",
+      "BidDifferencePercentage",
+      "AskDifferencePercentage",
+      "RateDifferencePercentage",
+      "t_change",
+    ];
+    const swapPairs = [
+      // ["gold", "goldnext"],
+      ["silver", "silvernext"],
+    ];
+    swapPairs.forEach(([a, b]) => {
+      const first = prices.find((p) => p.symbol === a);
+      const second = prices.find((p) => p.symbol === b);
+      if (first && second) {
+        swapFields.forEach((f) => {
+          const tmp = first[f];
+          first[f] = second[f];
+          second[f] = tmp;
+        });
       }
     });
-    // End
 
     prices.forEach((p) => {
       if (p.symbol === "gold") {
