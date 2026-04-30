@@ -102,30 +102,31 @@ const getPrices = async () => {
     });
 
     // Start
-    // prices.forEach((p) => {
-    //   if (p.symbol === "gold") {
-    //     const baseSymbol = p.symbol === "gold" ? "goldnext" : "silvernext";
-    //     const basePrice = prices.find((bp) => bp.symbol === baseSymbol);
-    //     if (basePrice) {
-    //       p.Bid = basePrice.Bid;
-    //       p.Ask = basePrice.Ask;
-    //       p.High = basePrice.High;
-    //       p.Low = basePrice.Low;
-    //       p.LTP = basePrice.LTP;
-    //       p.Rate = basePrice.Rate;
-    //       p.Direction = basePrice.Direction;
-    //       p.BidDirection = basePrice.BidDirection;
-    //       p.AskDirection = basePrice.AskDirection;
-    //       p.Difference = basePrice.Difference;
-    //       p.RateDifference = basePrice.RateDifference;
-    //       p.BidDifference = basePrice.BidDifference;
-    //       p.AskDifference = basePrice.AskDifference;
-    //       p.BidDifferencePercentage = basePrice.BidDifferencePercentage;
-    //       p.AskDifferencePercentage = basePrice.AskDifferencePercentage;
-    //       p.RateDifferencePercentage = basePrice.RateDifferencePercentage;
-    //     }
-    //   }
-    // });
+    const swapSymbol = "silver"; // enum: "gold" or "silver" or "none"
+    prices.forEach((p) => {
+      if (p.symbol === swapSymbol) {
+        const baseSymbol = p.symbol === "gold" ? "goldnext" : "silvernext";
+        const basePrice = prices.find((bp) => bp.symbol === baseSymbol);
+        if (basePrice) {
+          p.Bid = basePrice.Bid;
+          p.Ask = basePrice.Ask;
+          p.High = basePrice.High;
+          p.Low = basePrice.Low;
+          p.LTP = basePrice.LTP;
+          p.Rate = basePrice.Rate;
+          p.Direction = basePrice.Direction;
+          p.BidDirection = basePrice.BidDirection;
+          p.AskDirection = basePrice.AskDirection;
+          p.Difference = basePrice.Difference;
+          p.RateDifference = basePrice.RateDifference;
+          p.BidDifference = basePrice.BidDifference;
+          p.AskDifference = basePrice.AskDifference;
+          p.BidDifferencePercentage = basePrice.BidDifferencePercentage;
+          p.AskDifferencePercentage = basePrice.AskDifferencePercentage;
+          p.RateDifferencePercentage = basePrice.RateDifferencePercentage;
+        }
+      }
+    });
     // End
 
     prices.forEach((p) => {
