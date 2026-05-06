@@ -124,7 +124,7 @@ const getPrices = async () => {
     ];
     const swapPairs = [
       // ["gold", "goldnext"],
-      ["silver", "silvernext"],
+      // ["silver", "silvernext"],
     ];
     swapPairs.forEach(([a, b]) => {
       const first = prices.find((p) => p.symbol === a);
